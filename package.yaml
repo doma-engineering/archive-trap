@@ -1,0 +1,45 @@
+name:                archive-trap
+version:             0.1.0.0
+github:              "do-ma/archive-trap"
+license:             BSD3
+author:              "doma team"
+maintainer:          "haskell@doma.dev"
+copyright:           "2020 doma team"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+synopsis:            Simple config tracker
+category:            DevOps
+
+description:         Please see the README on GitHub at <https://github.com/do-ma/archive-trap#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+
+library:
+  source-dirs: src
+
+executables:
+  archive-trap-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - archive-trap
+
+tests:
+  archive-trap-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - archive-trap
