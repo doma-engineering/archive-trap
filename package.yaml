@@ -17,7 +17,12 @@ category:            DevOps
 description:         Please see the README on GitHub at <https://github.com/do-ma/archive-trap#readme>
 
 dependencies:
+- aeson
 - base >= 4.7 && < 5
+- either
+- foldl
+- turtle
+- text
 
 library:
   source-dirs: src

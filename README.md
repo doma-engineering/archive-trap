@@ -17,4 +17,6 @@
 
 ## Roadmap
 
+ - Files are individually encrypted a la `pass` [COMING LATER]
  - JSON over HTTP endpoints for a unified service monitoring web interface
+ - Generate SimpleInclude|Exclude with TH
