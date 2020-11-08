@@ -69,15 +69,14 @@ simpleFilter :: Shell FilePath -> Maybe Greenlist -> Maybe Redlist -> Shell File
 simpleFilter _ Nothing Nothing = select []
 simpleFilter sfp (Just g) Nothing =
   fold sfp (filterIntoList $ simplyAllow g) >>= select
-{-- simpleFilter sfp Nothing (Just r) =
-  select $ Foldl.fold (filterIntoList $ simplyDeny g) sfp
+simpleFilter sfp Nothing (Just r) =
+  fold sfp (filterIntoList $ simplyDeny r) >>= select
 simpleFilter sfp (Just g) (Just r) =
-  select $ Foldl.fold (filterIntoList $ simplyDecide g r) sfp --}
+  fold sfp (filterIntoList $ simplyDecide g r) >>= select
 
 -- | simplyAllow will allow empty wildcards (Nothing / Nothing / ..)
 simplyAllow :: Greenlist -> FilePath -> Bool
 simplyAllow = simplyAllowDo True
-
 simplyAllowDo False _ _ = False
 simplyAllowDo True
               ( Greenlist ( (SimpleRule {tdfr_exact = Just needle }:srs) ) )
@@ -111,8 +110,20 @@ simplyAllowDo True
               haystack =
   simplyAllowDo True (Greenlist srs) haystack
 
-simplyDeny = undefined
-simplyDecide = undefined
+-- | simplyDeny will deny empty wildcards (Nothing / Nothing / ..)
+simplyDeny :: Redlist -> FilePath -> Bool
+simplyDeny (Redlist srs) fp = not $ simplyAllowDo True (Greenlist srs) fp
+
+-- | If both allow and deny, simplyDecide will deny (adhering to “red” trumps “green”)
+simplyDecide :: Greenlist -> Redlist -> FilePath -> Bool
+simplyDecide g r fp =
+  if (denied (simplyDeny r fp))
+    then deny
+    else (simplyAllow g fp)
+  where
+    denied False = True
+    denied True = False
+    deny = False
 
 -- Green
 
