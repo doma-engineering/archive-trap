@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 4bda2acbf526ef81c5f49e3b8ae697a7a1fd6028ad9d0b3a1d153afbbad83852
+-- hash: ff10e45d3715ace8fa17d45a0f739845b4a9259f370300613098220dfad07a43
 
 name:           archive-trap
 version:        0.1.0.0
@@ -31,7 +31,7 @@ library
   exposed-modules:
       ArchiveTrap
       DevOps.Config
-      DevOps.Config.Git
+      DevOps.Git
       DevOps.OS
       Lib
       Turtle.Convert
