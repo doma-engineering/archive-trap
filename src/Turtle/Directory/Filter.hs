@@ -10,6 +10,7 @@
 --    - “tdfr_exact” trumps any wildcard (“tdfr_prefix, tdfr_infix, tdfr_suffix”)
 module Turtle.Directory.Filter ( Greenlist()
                                , Redlist()
+                               , SimpleRule(..)
 
                                , mkGreen
                                , mkRed
@@ -31,6 +32,8 @@ import Control.Foldl ( Fold(..) )
 
 import qualified Control.Foldl as Foldl
 import qualified Data.Text as T
+
+--import Debug.Trace (trace)
 
 -- Common
 
@@ -77,13 +80,22 @@ simpleFilter sfp (Just g) (Just r) =
 -- | simplyAllow will allow empty wildcards (Nothing / Nothing / ..)
 simplyAllow :: Greenlist -> FilePath -> Bool
 simplyAllow = simplyAllowDo True
-simplyAllowDo False _ _ = False
+
+simplyAllowDo :: Bool -> Greenlist -> FilePath -> Bool
+-- When we fail a criteria, we flip the bit to False
+-- If there are more @SimpleRule@s, we'll gladly continue
+-- search for the match.
+-- Otherwise (if Greenlist is exhausted), the next match will
+-- happen and we'll return False.
+simplyAllowDo False (Greenlist (_:xs)) haystack =
+  simplyAllowDo True (Greenlist xs) haystack
+simplyAllowDo _ (Greenlist []) _ = False
 simplyAllowDo True
               ( Greenlist ( (SimpleRule {tdfr_exact = Just needle }:srs) ) )
               haystack =
-  simplyAllowDo (needle == haystack)
-                (Greenlist srs)
-                haystack
+  if (needle == haystack)
+    then True
+    else simplyAllowDo True (Greenlist srs) haystack
 simplyAllowDo True
               (Greenlist (sr@SimpleRule { tdfr_prefix = Just needle }:srs))
               haystack =
@@ -103,12 +115,18 @@ simplyAllowDo True
   simplyAllowDo (p2t needle `T.isInfixOf` p2t haystack)
                 (Greenlist (sr { tdfr_infix = Nothing }:srs)) haystack
 simplyAllowDo True
+              -- A criteria is Nothing if
+              -- - It was Nothing in the first place
+              -- - It was anulled previous *successful* matches of simplyAllowDo
+              --
+              -- If there was an unsuccessful match of `Just criteria`, the bool
+              -- bit would have been flipped and the topmost `False` pattern would have
+              -- happened, resulting in returning False
               ( Greenlist ( (SimpleRule { tdfr_prefix = Nothing
                                , tdfr_infix  = Nothing
                                , tdfr_suffix = Nothing
                                , tdfr_exact  = Nothing }):srs ) )
-              haystack =
-  simplyAllowDo True (Greenlist srs) haystack
+              haystack = True
 
 -- | simplyDeny will deny empty wildcards (Nothing / Nothing / ..)
 simplyDeny :: Redlist -> FilePath -> Bool

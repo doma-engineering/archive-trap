@@ -21,8 +21,10 @@ dependencies:
 - base >= 4.7 && < 5
 - either
 - foldl
+- hostname
 - turtle
 - text
+- system-filepath
 
 library:
   source-dirs: src

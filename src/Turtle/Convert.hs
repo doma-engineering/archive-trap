@@ -8,15 +8,22 @@ module Turtle.Convert ( t2l
                       , t2pp
                       , pp2t
                       , p2pp
-                      , pp2p ) where
+                      , pp2p
+
+                      , texts2p
+                      , joinPaths
+                      ) where
 
 import Turtle
 import Prelude hiding ( FilePath )
+
 import Data.Maybe ( fromJust )
 import Data.Either.Combinators ( fromRight )
+import Data.List (intersperse)
 
 import qualified Prelude as P
 import qualified Data.Text as T
+import qualified Filesystem.Path.CurrentOS as F
 
 t2l :: Text -> Line
 t2l = fromJust . textToLine
@@ -25,7 +32,7 @@ l2t :: Line -> Text
 l2t = lineToText
 
 p2t :: FilePath -> Text
-p2t = fromRight "/tmp/.non-existant" . toText
+p2t = fromRight "/dev/null" . toText
 
 t2p :: Text -> FilePath
 t2p = fromText
@@ -41,3 +48,17 @@ t2pp = T.unpack
 
 pp2t :: P.FilePath -> Text
 pp2t = T.pack
+
+texts2p :: [Text] -> FilePath
+texts2p ts = fromText $ T.concat joined
+  where
+    joined = intersperse "/" ts
+
+{-- This shit is super-buggy. I'll support Windows 10 when I can be fucked work out this currentOS bullshit
+
+texts2p :: [Text] -> FilePath
+texts2p xs = ( t2p . fromRight "/dev/null" . F.toText . F.concat) $ F.fromText <$> xs
+--}
+
+joinPaths :: [FilePath] -> FilePath
+joinPaths = texts2p . (fmap (fromRight "" . toText))
