@@ -1,10 +1,10 @@
 # archive-trap
 
- - Binary name is `trar` (trap archive)
+ - Binary name is `cfg` (confusing the audience)
    - Verbs:
-     - `pull [host-id]`
-     - `push commit-msg`
-     - `log [host-id]`
+     - `--pull [host-id]`
+     - `--push commit-msg`
+     - `--snap [host-id]`
  - Tracks your server configs, based on the hostname
  - Target for pulls and pushes is a _secret_ github repository where
    - Branch names are host names
