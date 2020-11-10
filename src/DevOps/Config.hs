@@ -9,16 +9,23 @@ module DevOps.Config ( snapConfigs
 
 import Data.Text (Text(..))
 import Turtle
+    ( FilePath,
+      directory,
+      cp,
+      ls,
+      mktree,
+      stat,
+      foldIO,
+      isRegularFile,
+      Shell )
 import Prelude hiding (FilePath)
-import Turtle.Convert
-import Turtle.Directory.Filter
+import Turtle.Convert ( joinPaths )
+import Turtle.Directory.Filter ( simpleFilter, Greenlist, Redlist )
 
 import qualified Control.Foldl as Foldl
-import qualified Data.Text as T
 
-import DevOps.OS
+import DevOps.OS ( OS(Ubuntu) )
 
-import Debug.Trace (trace)
 
 -- | Snapshot of system state, helps reinstall necessary system-wide packages
 data Snapshot = Snapshot { dcs_packages :: [Package]

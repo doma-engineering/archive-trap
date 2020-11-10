@@ -1,11 +1,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 module ArchiveTrap (red, green, relevant, secureGitRepo, computerType) where
 
-import Turtle
+import Turtle ( Text, FilePath, lsdepth, Shell )
 import Prelude hiding (FilePath)
 import Turtle.Directory.Filter
+    ( mkGreen,
+      mkInfix,
+      mkPrefix,
+      mkRed,
+      mkSuffix,
+      Greenlist,
+      Redlist,
+      SimpleRule(..) )
 
-import DevOps.Git
+import DevOps.Git ( mkRepo, Repo )
 
 secureGitRepo :: Repo
 secureGitRepo = mkRepo "doma.git:do-ma/infrastructure.git"

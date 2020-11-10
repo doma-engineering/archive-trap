@@ -15,6 +15,7 @@ module Turtle.Convert ( t2l
                       ) where
 
 import Turtle
+    ( Text, FilePath, Line, fromText, toText, lineToText, textToLine )
 import Prelude hiding ( FilePath )
 
 import Data.Maybe ( fromJust )
@@ -23,7 +24,6 @@ import Data.List (intersperse)
 
 import qualified Prelude as P
 import qualified Data.Text as T
-import qualified Filesystem.Path.CurrentOS as F
 
 t2l :: Text -> Line
 t2l = fromJust . textToLine
