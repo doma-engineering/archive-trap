@@ -21,6 +21,7 @@ main = do
   proc "git" ["clone", "git@github.com:do-ma/infrastructure.git", p2t tmpDir] empty
   brbrbr <- hostnameBranch
   let branch = getBranch brbrbr
-  shell ( "cd " <> p2t tmpDir <> " && git checkout -b " <> computerType <> "/" <> branch ) empty
+  shell ( "cd " <> p2t tmpDir <> " && git checkout " <> computerType <> "/" <> branch ) empty
+  --shell ( "cd " <> p2t tmpDir <> " && git checkout -b " <> computerType <> "/" <> branch ) empty
   snapConfigs relevant green red tmpDir
   void $ shell ( "cd " <> p2t tmpDir <> " && git add . && git commit -am 'Auto-commit' && git push origin " <> computerType <> "/" <> branch ) empty

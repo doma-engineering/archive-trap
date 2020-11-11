@@ -10,6 +10,8 @@ module DevOps.Git ( Branch ()
                   , hostnameBranch
                   ) where
 
+import Turtle
+import Prelude hiding (FilePath)
 import Data.Text (Text(..))
 import Network.HostName (getHostName)
 import qualified Data.Text as T
@@ -28,3 +30,7 @@ mkRepo x = Repo x
 -- | Returns branch named the same way as hostname
 hostnameBranch :: IO Branch
 hostnameBranch = getHostName >>= (return . h2b)
+
+-- | Adds everything and makes a commit
+commit :: FilePath -> IO ExitCode
+commit fp = undefined

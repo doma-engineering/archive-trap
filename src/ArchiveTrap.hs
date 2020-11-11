@@ -27,6 +27,12 @@ red = Just $ mkRed [ mkInfix ".steam"
                    , mkSuffix ".tmp"
                    , mkInfix ".git"
                    , mkSuffix "errors"
+                   , mkSuffix ".netsh"
+                   , mkSuffix "creds"
+                   , mkSuffix "credentials"
+                   , mkSuffix ".viminfo"
+                   , mkSuffix "xmonad-x86_64-linux"
+                   , mkSuffix ".png"
                    ]
 
 green :: Maybe Greenlist
@@ -39,12 +45,18 @@ green = Just $ mkGreen [ mkPrefix "/etc/nginx"
                        , linuxAnyUser (Just ".vim") Nothing
                        , linuxAnyUser (Just ".emacs") Nothing
                        , linuxAnyUser (Just ".xsession") Nothing
-                       --, linuxAnyUser (Just ".fonts") Nothing
                        , linuxAnyUser (Just ".xmonad") Nothing
                        , linuxAnyUser Nothing (Just ".Xresources")
                        , linuxAnyUser Nothing (Just ".Xdemo")
                        , linuxAnyUser Nothing (Just ".ssh/config")
                        , linuxAnyUser Nothing (Just ".ssh/known_hosts")
+
+                       -- Mail stuff
+                       , linuxAnyUser Nothing (Just ".muttrc")
+                       , linuxAnyUser (Just ".mutt/includes") Nothing
+                       , linuxAnyUser Nothing (Just ".fetchmailrc")
+                       , linuxAnyUser Nothing (Just ".procmailrc")
+                       , linuxAnyUser Nothing (Just ".gpgrc")
                        ]
 
 relevant :: Shell FilePath
