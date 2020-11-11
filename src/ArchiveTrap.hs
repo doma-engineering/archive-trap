@@ -56,7 +56,7 @@ green = Just $ mkGreen [ mkPrefix "/etc/nginx"
                        , linuxAnyUser (Just ".mutt/includes") Nothing
                        , linuxAnyUser Nothing (Just ".fetchmailrc")
                        , linuxAnyUser Nothing (Just ".procmailrc")
-                       , linuxAnyUser Nothing (Just ".gpgrc")
+                       , linuxAnyUser Nothing (Just ".gpg.rc")
                        ]
 
 relevant :: Shell FilePath
