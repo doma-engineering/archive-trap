@@ -15,10 +15,12 @@ exit
 stack build && sudo rm -rvf /tmp/archive-trap-secure/ && sudo cp -rv
 ~/.ssh /root/ && sudo
 .stack-work/dist/x86_64-linux-tinfo6/Cabal-3.0.1.0/build/archive-trap-exe/archive-trap-exe
+
+# Explanation:
+#   - `stack build`: rebuild the project with your new configuration
+#   - `sudo cp -rv ~/.ssh ...`: make sure `root` can pull from Git
+#   - `sudo .stack-work ...`: run archive trap. Sudo needed to capture other people's home directories.
 ```
-   - `stack build`: rebuild the project with your new configuration
-   - `sudo cp -rv ~/.ssh ...`: make sure `root` can pull from Git
-   - `sudo .stack-work ...`: run archive trap. Sudo needed to capture other people's home directories.
 
 ## What is this
 
