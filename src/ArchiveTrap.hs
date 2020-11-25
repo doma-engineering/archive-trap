@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module ArchiveTrap (red, green, relevant, secureGitRepo, computerType) where
 
-import Turtle ( Text, FilePath, lsdepth, Shell )
+import Turtle ( Text, FilePath, lsdepth, Shell, cat )
 import Prelude hiding (FilePath)
 import Turtle.Directory.Filter
     ( mkGreen,
@@ -50,19 +50,25 @@ green = Just $ mkGreen [ mkPrefix "/etc/nginx"
                        , linuxAnyUser Nothing (Just ".Xdemo")
                        , linuxAnyUser Nothing (Just ".ssh/config")
                        , linuxAnyUser Nothing (Just ".ssh/known_hosts")
+                       , linuxAnyUser Nothing (Just ".tmux.conf")
 
-                       -- Mail stuff
+                       -- Mail / Git stuff
                        , linuxAnyUser Nothing (Just ".muttrc")
                        , linuxAnyUser (Just ".mutt/includes") Nothing
+                       , linuxAnyUser (Just ".mutt/tasks") Nothing
+
                        , linuxAnyUser Nothing (Just ".fetchmailrc")
                        , linuxAnyUser Nothing (Just ".procmailrc")
                        , linuxAnyUser Nothing (Just ".gpg.rc")
                        ]
 
 relevant :: Shell FilePath
-relevant = lsdepth 1 4 "/"
+relevant = cat [lsdepth 1 3 "/etc/", lsdepth 1 3 "/home/"]
 
-linuxAnyUser :: Maybe FilePath -> Maybe FilePath -> SimpleRule
+type Infix = FilePath
+type Suffix = FilePath
+
+linuxAnyUser :: Maybe Infix -> Maybe Suffix -> SimpleRule
 linuxAnyUser xinf xsuf = SimpleRule {
   tdfr_prefix = Just "/home",
   tdfr_infix  = xinf,

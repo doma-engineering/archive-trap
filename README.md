@@ -8,18 +8,29 @@
      - Run a command akin to this:
 
 ```
+# Do this step once
 sudo su
 git config --global user.name "root"
 git config --global user.email "root@localhost"
 exit
-stack build && sudo rm -rvf /tmp/archive-trap-secure/ && sudo cp -rv
-~/.ssh /root/ && sudo
-.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.0.1.0/build/archive-trap-exe/archive-trap-exe
+
+# Do this step to run backup
+stack build --copy-bins && \
+  sudo rm -rvf "/tmp/archive-trap-secure/" ; sudo cp -rv "$HOME/.ssh" "/root/" && \
+  sudo "$HOME/.local/bin/archive-trap-exe"
 
 # Explanation:
-#   - `stack build`: rebuild the project with your new configuration
-#   - `sudo cp -rv ~/.ssh ...`: make sure `root` can pull from Git
-#   - `sudo .stack-work ...`: run archive trap. Sudo needed to capture other people's home directories.
+ # stack build --copy-bins: Will copy `archive-trap-exe` into your ~/.local/bin
+ # rm -rvf /tmp/archive-trap-secure/: Will make sure you don't have
+   # secure repo cloned anymore
+ # cp -rv "$HOME/.ssh" "/root/": Will copy your private key to root home
+   # directory (I assume that your threat model is such that if root is
+   # compromised your user is also compromised, so it's fine. Just don't
+   # forget about this bit if you have some scripts to wipe your private
+   # info from a computer quickly)
+ # sudo "$HOME/.local/bin/archive-trap-exe": Actually runs the backup
+   # script. Sudo is needed to grab configs from other users if needed.
+
 ```
 
 ## What is this
