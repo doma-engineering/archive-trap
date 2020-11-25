@@ -4,8 +4,7 @@
    - Configure your stuff in `src/ArchiveTrap.hs`:
      - Choose computer type ("laptop" by default)
      - Change secure git repo to your config storage
-     - Make sure there are no creds in your `.fetchmailrc` (they MUST be
-       in `.netrc`
+     - Make sure there are no creds in your `.fetchmailrc` (they MUST be in `.netrc`)
      - Run a command akin to this:
 
 ```
