@@ -16,10 +16,10 @@ import Turtle.Directory.Filter
 import DevOps.Git ( mkRepo, Repo )
 
 secureGitRepo :: Repo
-secureGitRepo = mkRepo "doma.git:do-ma/infrastructure.git"
+secureGitRepo = mkRepo "git@github.com:do-ma/infrastructure.git"
 
 computerType :: Text
-computerType = "laptop"
+computerType = "wsl"
 
 red :: Maybe Redlist
 red = Just $ mkRed [ mkInfix ".steam"
