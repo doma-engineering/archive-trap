@@ -40,6 +40,7 @@ green = Just $ mkGreen [ mkPrefix "/etc/nginx"
                        , mkPrefix "/etc/hosts"
                        , mkPrefix "/etc/hostname"
                        , mkPrefix "/etc/cron"
+                       , linuxAnyUser (Just ".gnupg") (Just ".conf")
                        , linuxAnyUser Nothing (Just ".bashrc")
                        , linuxAnyUser (Just ".bashrc") Nothing
                        , linuxAnyUser (Just ".vim") Nothing
